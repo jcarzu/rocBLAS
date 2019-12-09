@@ -101,6 +101,7 @@ set( rocblas_headers_public
   include/rocblas_bfloat16.h
   include/rocblas-auxiliary.h
   include/rocblas-functions.h
+  include/rocsolver-functions.h
   ${PROJECT_BINARY_DIR}/include/rocblas-version.h
 )
 

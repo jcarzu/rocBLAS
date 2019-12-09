@@ -49,6 +49,13 @@ if( BUILD_WITH_TENSILE )
     geam_gtest.cpp
     trtri_gtest.cpp
     )
+
+  if( BUILD_ROCSOLVER )
+    set(T_roclapack_test_source
+        larfb_gtest.cpp
+        getrs_gtest.cpp
+        )
+  endif( )
 endif( )
 
 set(rocblas_no_tensile_test_source
@@ -66,6 +73,23 @@ set(rocblas_no_tensile_test_source
     symv_gtest.cpp
     )
 
+if( BUILD_ROCSOLVER )
+  set(roclapack_test_source
+#      laswp_gtest.cpp
+      getf2_getrf_gtest.cpp
+#      getf2_getrf_batched_gtest.cpp
+#      getf2_getrf_strided_batched_gtest.cpp
+#      larfg_gtest.cpp
+#      larf_gtest.cpp
+#      larft_gtest.cpp
+#      geqr2_geqrf_gtest.cpp
+#      geqr2_geqrf_batched_gtest.cpp
+#      geqr2_geqrf_strided_batched_gtest.cpp
+#      potf2_gtest.cpp
+     )
+endif( )
+
+
 if(LINK_BLIS)
   set( BLIS_CPP ../common/blis_interface.cpp )
 endif()
@@ -77,7 +101,7 @@ set( rocblas_benchmark_common
       ../common/rocblas_parse_data.cpp
     )
 
-add_executable( rocblas-test ${rocblas_no_tensile_test_source} ${rocblas_test_source} ${rocblas_benchmark_common} )
+add_executable( rocblas-test ${roclapack_test_source} ${T_roclapack_test_source} ${rocblas_no_tensile_test_source} ${rocblas_test_source} ${rocblas_benchmark_common} )
 
 if( BUILD_WITH_TENSILE )
     target_compile_definitions( rocblas-test PRIVATE BUILD_WITH_TENSILE=1 GOOGLE_TEST )

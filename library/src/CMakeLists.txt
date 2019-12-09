@@ -122,6 +122,22 @@ if( BUILD_WITH_TENSILE )
     blas2/rocblas_trsv_batched.cpp
   )
 
+  if( BUILD_ROCSOLVER )
+    set( T_rocsolver_auxiliary_source
+      auxiliary/rocauxiliary_larfb.cpp
+    )
+
+    set( T_rocsolver_lapack_source
+      lapack/roclapack_getrf.cpp
+      lapack/roclapack_getrf_batched.cpp
+      lapack/roclapack_getrf_strided_batched.cpp
+      lapack/roclapack_getrs.cpp
+      lapack/roclapack_geqrf.cpp
+      lapack/roclapack_geqrf_batched.cpp
+      lapack/roclapack_geqrf_strided_batched.cpp
+    )
+  endif( )
+
 endif( ) # BUILD_WITH_TENSILE
 
 set( rocblas_blas2_source
@@ -186,6 +202,30 @@ set( rocblas_blas1_source
   blas1/rocblas_swap_strided_batched.cpp
 )
 
+if( BUILD_ROCSOLVER )
+  set( rocsolver_auxiliary_source
+    auxiliary/rocauxiliary_laswp.cpp
+    auxiliary/rocauxiliary_larfg.cpp
+    auxiliary/rocauxiliary_larf.cpp
+    auxiliary/rocauxiliary_larft.cpp
+  )
+
+  set( rocsolver_common_source
+    common/helpers.cpp
+    common/rocblas.cpp
+  )
+
+  set( rocsolver_lapack_source
+    lapack/roclapack_getf2.cpp
+    lapack/roclapack_getf2_batched.cpp
+    lapack/roclapack_getf2_strided_batched.cpp
+    lapack/roclapack_potf2.cpp
+    lapack/roclapack_geqr2.cpp
+    lapack/roclapack_geqr2_batched.cpp
+    lapack/roclapack_geqr2_strided_batched.cpp
+  )
+endif( )
+
 prepend_path( ".." rocblas_headers_public relative_rocblas_headers_public )
 
 add_library( rocblas
@@ -193,6 +233,11 @@ add_library( rocblas
   ${rocblas_blas3_source}
   ${rocblas_blas2_source}
   ${rocblas_blas1_source}
+  ${rocsolver_lapack_source}
+  ${T_rocsolver_lapack_source}
+  ${rocsolver_auxiliary_source}
+  ${T_rocsolver_auxiliary_source}
+  ${rocsolver_common_source}
   ${relative_rocblas_headers_public}
   ${rocblas_auxiliary_source}
 )

@@ -202,20 +202,12 @@ endif( )
 # CMake list of machine targets
 set( AMDGPU_TARGETS gfx803;gfx900;gfx906;gfx908 CACHE STRING "List of specific machine types for library to target" )
 
-# Build rocblas library
+# Build library
 add_subdirectory( library )
 
-# Build rocsolver library
-if( BUILD_ROCSOLVER )
-  add_subdirectory( rocsolver/library )
-endif( )
-
-# Build clients of the libraries
+# Build clients
 if( BUILD_CLIENTS_SAMPLES OR BUILD_CLIENTS_TESTS OR BUILD_CLIENTS_BENCHMARKS )
   add_subdirectory( clients )
-  if( BUILD_ROCSOLVER )
-    add_subdirectory( rocsolver/clients )
-  endif( )
 endif( )
 
 

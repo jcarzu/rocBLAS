@@ -15,6 +15,11 @@ if( NOT BUILD_WITH_TENSILE )
   option( BUILD_WITH_TENSILE "Build rocBLAS with Tensile or not" ON )
 endif( )
 
+if( NOT BUILD_ROCSOLVER )
+  option( BUILD_ROCSOLVER "Build rocSOLVER or not" ON )
+endif( )
+
+
 # Samples have no other dependencies except for rocblas, so are enabled by default
 if( NOT BUILD_CLIENTS_SAMPLES )
   option( BUILD_CLIENTS_SAMPLES "Build rocBLAS samples" OFF )

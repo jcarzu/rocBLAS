@@ -16,3 +16,4 @@ include: set_get_vector_gtest.yaml
 include: trsv_gtest.yaml
 include: logging_mode_gtest.yaml
 include: set_get_pointer_mode_gtest.yaml
+include: getf2_getrf_gtest.yaml

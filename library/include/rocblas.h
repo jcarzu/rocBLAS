@@ -15,5 +15,6 @@
 #include "rocblas-functions.h"
 #include "rocblas-types.h"
 #include "rocblas-version.h"
+#include "rocsolver-functions.h"
 
 #endif // _ROCBLAS_H_

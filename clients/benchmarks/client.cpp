@@ -63,6 +63,22 @@
 #include <string>
 #include <type_traits>
 
+#if BUILD_ROCSOLVER
+#include "testing_getf2_getrf.hpp"
+//#include "testing_getf2_getrf_batched.hpp"
+//#include "testing_getf2_getrf_strided_batched.hpp"
+//#include "testing_geqr2_geqrf.hpp"
+//#include "testing_geqr2_geqrf_batched.hpp"
+//#include "testing_geqr2_geqrf_strided_batched.hpp"
+//#include "testing_getrs.hpp"
+//#include "testing_potf2.hpp"
+//#include "testing_larfg.hpp"
+//#include "testing_larf.hpp"
+//#include "testing_larft.hpp"
+//#include "testing_larfb.hpp"
+//#include "testing_laswp.hpp"
+#endif
+
 using namespace std::literals; // For std::string literals of form "str"s
 
 struct str_less
@@ -206,6 +222,9 @@ struct perf_blas<
                 {"ger", testing_ger<T>},
                 {"syr", testing_syr<T>},
                 {"tbmv", testing_tbmv<T>},
+#if BUILD_ROCSOLVER
+                {"getf2", testing_getf2_getrf<T, 0>},
+#endif
 #if BUILD_WITH_TENSILE
                 {"geam", testing_geam<T>},
                 {"trmm", testing_trmm<T>},
@@ -400,6 +419,7 @@ int run_bench_test(Arguments& arg)
     // Skip past any testing_ prefix in function
     static constexpr char prefix[] = "testing_";
     const char*           function = arg.function;
+
     if(!strncmp(function, prefix, sizeof(prefix) - 1))
         function += sizeof(prefix) - 1;
 
@@ -639,6 +659,14 @@ try
          value<rocblas_int>(&arg.ldd)->default_value(128),
          "Leading dimension of matrix D, is only applicable to BLAS-EX ")
 
+        ("ldv",
+        value<rocblas_int>(&arg.ldv)->default_value(1024),
+        "Specific leading dimension.")
+
+        ("ldt",
+        value<rocblas_int>(&arg.ldt)->default_value(1024),
+        "Specific leading dimension.")
+
         ("stride_a",
          value<rocblas_int>(&arg.stride_a)->default_value(128*128),
          "Specific stride of strided_batched matrix A, is only applicable to strided batched"
@@ -668,6 +696,12 @@ try
          value<rocblas_int>(&arg.stride_y)->default_value(128*128),
          "Specific stride of strided_batched vector y, is only applicable to strided batched"
          "BLAS_2: leading dimension.")
+
+        ("stride_p",
+        value<rocblas_int>(&arg.stride_p)->default_value(1024),
+        "Specific stride of batched pivots vector "
+        "Ipiv, is only applicable to batched and "
+        "strided_batched factorizations")
 
         ("incx",
          value<rocblas_int>(&arg.incx)->default_value(1),
@@ -730,6 +764,10 @@ try
          value<char>(&arg.transB)->default_value('N'),
          "N = no transpose, T = transpose, C = conjugate transpose")
 
+        ("transposeH",
+         value<char>(&arg.transH)->default_value('N'),
+         "N = no transpose, T = transpose, C = conjugate transpose")
+
         ("side",
          value<char>(&arg.side)->default_value('L'),
          "L = left, R = right. Only applicable to certain routines")
@@ -741,6 +779,10 @@ try
         ("diag",
          value<char>(&arg.diag)->default_value('N'),
          "U = unit diagonal, N = non unit diagonal. Only applicable to certain routines") // xtrsm xtrsm_ex xtrsv
+
+        ("direct",
+        value<char>(&arg.direct)->default_value('F'),
+        "F = forward, B = backward. Only applicable to certain routines")
 
         ("batch_count",
          value<rocblas_int>(&arg.batch_count)->default_value(1),

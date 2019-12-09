@@ -56,6 +56,12 @@ else()
     target_compile_definitions( rocblas-bench PRIVATE BUILD_WITH_TENSILE=0 )
 endif()
 
+if( BUILD_ROCSOLVER )
+    target_compile_definitions( rocblas-bench PRIVATE BUILD_ROCSOLVER=1 )
+else()
+    target_compile_definitions( rocblas-bench PRIVATE BUILD_ROCSOLVER=0 )
+endif()
+
 # Internal header includes
 target_include_directories( rocblas-bench
   PRIVATE
