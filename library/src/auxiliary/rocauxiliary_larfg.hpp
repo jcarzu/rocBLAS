@@ -9,9 +9,9 @@
 #ifndef ROCLAPACK_LARFG_HPP
 #define ROCLAPACK_LARFG_HPP
 
+#include "../blas1/rocblas_scal.hpp"
 #include "common_device.hpp"
 #include "ideal_sizes.hpp"
-#include "rocblas-exported-proto.hpp"
 #include "rocblas.h"
 #include "rocblas.hpp"
 #include "utility.h"
